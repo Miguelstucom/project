@@ -53,6 +53,7 @@ class _MyHomePageState extends State<Login> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 10,),
                   if (!nodeEmail.hasFocus && !nodePass.hasFocus)
                     Image.asset(
                       'assets/images/logo.webp',
