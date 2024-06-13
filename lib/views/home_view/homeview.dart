@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SegundaPagina extends StatefulWidget {
-  SegundaPagina({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
 
   @override
-  _SegundaPaginaState createState() => _SegundaPaginaState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _SegundaPaginaState extends State<SegundaPagina> {
+class _HomePageState extends State<HomePage> {
   final FocusNode _textFocusNode = FocusNode();
 
   @override

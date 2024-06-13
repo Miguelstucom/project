@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'Settings/app_settings.dart';
 import 'Themes/Router/Router.dart';
 import 'Themes/Router/Routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() {
   Intl.defaultLocale = defaultDeviceLanguage;
   //initializeDateFormatting('es-ES', null);
-  runApp(const Project());
+  runApp(DevicePreview(builder: (context) => const Project()));
 }
 
 class Project extends StatefulWidget {
   const Project({super.key});
+
   @override
   State<StatefulWidget> createState() => MainState();
 }
 
 class MainState extends State {
   late Locale _locale;
+
   Locale get locale => _locale;
 
   final _supportedLocales = const [
@@ -42,6 +46,8 @@ class MainState extends State {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: const [
@@ -52,8 +58,11 @@ class MainState extends State {
       ],
       supportedLocales: _supportedLocales,
       locale: _locale,
+      builder: DevicePreview.appBuilder,
+      useInheritedMediaQuery: true,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+       fontFamily: 'Satoshi',
+        primaryColor: Colors.white
       ),
       routes: appRoutes,
       initialRoute: Routes.Splash,

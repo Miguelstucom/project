@@ -9,7 +9,7 @@ import 'Routes.dart';
 
 Map<String,Widget Function(BuildContext)> get appRoutes{
   return{
-    Routes.Home: (context) => SegundaPagina(),
+    Routes.Home: (context) => HomePage(),
     Routes.Splash: (context) => const SplashPage(),
     Routes.Login: (context) => const Login(),
   };
