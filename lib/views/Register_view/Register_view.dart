@@ -79,7 +79,7 @@ class RegisterState extends State<Register> {
                           decoration: const InputDecoration(
                               labelText: 'Nombre',
                               filled: true,
-                              hintText: 'Contraseña',
+                              hintText: 'ej: Miguel Ángel',
                               fillColor: Colors.white,
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.bold,

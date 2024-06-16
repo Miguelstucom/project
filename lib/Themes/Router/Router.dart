@@ -5,7 +5,7 @@ import 'package:project/views/Splash_view/Splash_view.dart';
 
 import '../../views/Login_view/Login_view.dart';
 import '../../views/Register_view/Register_view.dart';
-import '../../views/home_view/homeview.dart';
+import '../../views/home_view/Home_view.dart';
 import '../../views/wellcome_view/wellcome_view.dart';
 import 'Routes.dart';
 
