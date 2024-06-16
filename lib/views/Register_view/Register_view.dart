@@ -229,7 +229,7 @@ class RegisterState extends State<Register> {
                         ),
                         child: Text(
                           'Login',
-                          style: GoogleFonts.nunitoSans(
+                          style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               color: Colors.white),

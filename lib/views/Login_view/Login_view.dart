@@ -174,7 +174,7 @@ class _MyHomePageState extends State<Login> {
                         ),
                         child: Text(
                           'Login',
-                          style: GoogleFonts.nunitoSans(
+                          style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               color: Colors.white),
@@ -183,7 +183,7 @@ class _MyHomePageState extends State<Login> {
                       const SizedBox(height: 20.0),
                       Text(
                         "He olvidado la contraseña",
-                        style: GoogleFonts.nunitoSans(
+                        style: TextStyle(
                           color: Colors.blue,
                           fontSize: 18,
                         ),

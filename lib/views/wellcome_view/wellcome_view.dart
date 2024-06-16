@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Themes/Colors/Appcolors.dart';
 import '../../Themes/Widgets/Appbar.dart';
 
 class Wellcome extends StatelessWidget {
@@ -27,7 +28,7 @@ class Wellcome extends StatelessWidget {
                 SizedBox(
                   height: 120,
                 ),
-                Image.asset('assets/images/logo.png',height: 150,),
+                Image.asset('assets/images/logo_nuevo.png',height: 150,),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () {
@@ -37,7 +38,7 @@ class Wellcome extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: AppColors.elevatedButton,
                     minimumSize: const Size(double.infinity, 60),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -45,7 +46,7 @@ class Wellcome extends StatelessWidget {
                   ),
                   child: Text(
                     'Login',
-                    style: GoogleFonts.nunitoSans(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         color: Colors.white),
@@ -62,7 +63,7 @@ class Wellcome extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: AppColors.elevatedButton,
                     minimumSize: const Size(double.infinity, 60),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -70,7 +71,7 @@ class Wellcome extends StatelessWidget {
                   ),
                   child: Text(
                     'Registro',
-                    style: GoogleFonts.nunitoSans(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         color: Colors.white),
