@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
       const Duration(seconds: 5),
           () {
         if (mounted) {
-          Navigator.pushReplacementNamed(context, Routes.Login);
+          Navigator.pushReplacementNamed(context, Routes.Wellcome);
         }
       },
     );

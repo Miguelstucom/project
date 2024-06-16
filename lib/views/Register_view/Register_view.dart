@@ -3,21 +3,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../Themes/Widgets/Appbar.dart';
 
-class Login extends StatefulWidget {
+class Register extends StatefulWidget {
   final String title = "Login Page";
 
-  const Login({super.key});
+  const Register({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  RegisterState createState() => RegisterState();
 }
 
-class _MyHomePageState extends State<Login> {
+class RegisterState extends State<Register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FocusNode nodeEmail = FocusNode();
   FocusNode nodePass = FocusNode();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _confirmpasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +36,8 @@ class _MyHomePageState extends State<Login> {
     nodePass.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
+    _emailController.dispose();
+    _confirmpasswordController.dispose();
     super.dispose();
   }
 
@@ -59,10 +63,6 @@ class _MyHomePageState extends State<Login> {
                     children: [
                       Appbar(),
                       Spacer(),
-                      Image.asset('assets/images/logo.png',height: 150,),
-                      SizedBox(
-                        height: 20,
-                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -75,6 +75,32 @@ class _MyHomePageState extends State<Login> {
                         ),
                         child: TextFormField(
                           controller: _usernameController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                              labelText: 'Nombre',
+                              filled: true,
+                              hintText: 'Contraseña',
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              border: InputBorder.none,
+                              prefixIcon: Icon(Icons.person)),
+                          validator: (value) {
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextFormField(
+                          controller: _emailController,
                           focusNode: nodeEmail,
                           decoration: const InputDecoration(
                               labelText: 'Email',
@@ -121,6 +147,35 @@ class _MyHomePageState extends State<Login> {
                           },
                         ),
                       ),
+                      const SizedBox(height: 20.0),
+                      Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextFormField(
+                          controller: _confirmpasswordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                              labelText: 'Repetir Contraseña',
+                              filled: true,
+                              hintText: 'Contraseña',
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              border: InputBorder.none,
+                              prefixIcon: Icon(Icons.lock)),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
                       const SizedBox(height: 35.0),
                       ElevatedButton(
                         onPressed: () {
@@ -129,7 +184,7 @@ class _MyHomePageState extends State<Login> {
                             String password = _passwordController.text;
                             if (username == "User") {
                               RegExp passwordRegExp =
-                                  RegExp(r'^(?=.*[a-zA-Z])(?=.*\d).{7,}$');
+                              RegExp(r'^(?=.*[a-zA-Z])(?=.*\d).{7,}$');
                               if (passwordRegExp.hasMatch(password)) {
                                 Navigator.pushNamed(
                                   context,
@@ -147,7 +202,7 @@ class _MyHomePageState extends State<Login> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title:
-                                        const Text('Error de inicio de sesión'),
+                                    const Text('Error de inicio de sesión'),
                                     content: const Text(
                                       'Usuario o contraseña incorrectos',
                                     ),
@@ -179,17 +234,6 @@ class _MyHomePageState extends State<Login> {
                               fontSize: 20,
                               color: Colors.white),
                         ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Text(
-                        "He olvidado la contraseña",
-                        style: GoogleFonts.nunitoSans(
-                          color: Colors.blue,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
                       ),
                       const Spacer(),
                     ],
