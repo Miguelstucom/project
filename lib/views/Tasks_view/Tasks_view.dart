@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../Themes/Colors/Appcolors.dart';
 import '../../Themes/Widgets/Appbar.dart';
+import '../../Themes/Widgets/CustomTextField.dart';
 
 class TasksWriter extends StatefulWidget {
   const TasksWriter({super.key});
@@ -88,139 +89,33 @@ class _TasksWriterState extends State<TasksWriter> {
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextFormField(
-                            controller: nameController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                                labelText: 'Nombre de la tarea',
-                                filled: true,
-                                hintText: 'ej: Limpiar los platos',
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.list_alt)),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              return null;
-                            },
-                          ),
+                        NameField(
+                          controller: nameController,
+                          label: 'Nombre de la tarea',
+                          hint: 'ej: Limpiar los platos',
                         ),
-                        SizedBox(
-                          height: 20,
+                        SizedBox(height: 20),
+                        DescriptionField(
+                          controller: descriptionController,
+                          label: 'Descripción',
+                          hint: 'ej: lavar los platos',
+                          maxLength: 1000,
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextFormField(
-                            controller: descriptionController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            maxLength: 1000,
-                            decoration: const InputDecoration(
-                                labelText: 'Descripción',
-                                filled: true,
-                                hintText: 'ej: lavar los platos',
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.description)),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              return null;
-                            },
-                          ),
+                        SizedBox(height: 20),
+                        DateField(
+                          controller: startDateController,
+                          label: 'Fecha de inicio',
+                          hint: 'Introduce una fecha',
+                          onTap: () => _selectDate(context, true),
                         ),
-                        SizedBox(
-                          height: 20,
+                        SizedBox(height: 20),
+                        DateField(
+                          controller: finishDateController,
+                          label: 'Fecha final',
+                          hint: 'Introduce una fecha',
+                          onTap: () => _selectDate(context, false),
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextFormField(
-                            readOnly: true,
-                            controller: startDateController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            onTap: () => _selectDate(context, true),
-                            decoration: const InputDecoration(
-                                labelText: 'Fecha de inicio',
-                                filled: true,
-                                hintText: 'Introduce una fecha',
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.calendar_month)),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white, width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextFormField(
-                            controller: finishDateController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            onTap: () => _selectDate(context, false),
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                                labelText: 'Fecha final',
-                                filled: true,
-                                hintText: 'Introduce una fecha',
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                border: InputBorder.none,
-                                prefixIcon: Icon(Icons.calendar_month)),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(

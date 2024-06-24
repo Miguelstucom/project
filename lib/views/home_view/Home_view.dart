@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../Themes/Widgets/Appbar.dart';
+import '../../Themes/Widgets/TaskContainer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -250,99 +251,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             const SizedBox(
                               height: 15,
                             ),
-                            Container(
-                              height: 70,
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12.0),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.edit),
-                                  SizedBox(width: 20,),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Lavar los platos",style: TextStyle(fontWeight: FontWeight.bold)),
-                                      Text("Jun 22")
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Icon(Icons.cancel_outlined,color: Colors.red,)
-                                ],
-                              ),
-                            ),
+                            TaskContainer(name: "Limpar los platos",date: "Jun 22",done: true,),
                             const SizedBox(
                               height: 15,
                             ),
-                            Container(
-                              height: 70,
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12.0),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.note_add_outlined),
-                                  SizedBox(width: 20,),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Hacer la tarea",style: TextStyle(fontWeight: FontWeight.bold)),
-                                      Text("Jul 23")
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Icon(Icons.cancel_outlined,color: Colors.red,)
-                                ],
-                              ),
-                            ),
+                            TaskContainer(name: "Ir al gimnasio",date: "Jul 22",done: false,),
                             const SizedBox(
                               height: 15,
                             ),
-                            Container(
-                              height: 70,
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12.0),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.note_add_outlined),
-                                  SizedBox(width: 20,),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Ir al gimnasio",style: TextStyle(fontWeight: FontWeight.bold),),
-                                      Text("Nov 12")
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Icon(Icons.check,color: Colors.green,)
-                                ],
-                              ),
-                            ),
+                            TaskContainer(name: "Estudiar para el examen",date: "Jul 20",done: false,),
                           ],
                         ),
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
