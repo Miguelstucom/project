@@ -262,18 +262,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.note_add_outlined),
+                                  Icon(Icons.edit),
                                   SizedBox(width: 20,),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Tarea a hacer"),
-                                      Text("22 de")
+                                      Text("Lavar los platos",style: TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("Jun 22")
                                     ],
                                   ),
                                   Spacer(),
-                                  Icon(Icons.add,color: Colors.red,)
+                                  Icon(Icons.cancel_outlined,color: Colors.red,)
                                 ],
                               ),
                             ),
@@ -298,12 +298,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Tarea a hacer"),
-                                      Text("22 de")
+                                      Text("Hacer la tarea",style: TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("Jul 23")
                                     ],
                                   ),
                                   Spacer(),
-                                  Icon(Icons.add,color: Colors.red,)
+                                  Icon(Icons.cancel_outlined,color: Colors.red,)
                                 ],
                               ),
                             ),
@@ -328,12 +328,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Tarea a hacer"),
-                                      Text("22 de")
+                                      Text("Ir al gimnasio",style: TextStyle(fontWeight: FontWeight.bold),),
+                                      Text("Nov 12")
                                     ],
                                   ),
                                   Spacer(),
-                                  Icon(Icons.add,color: Colors.green,)
+                                  Icon(Icons.check,color: Colors.green,)
                                 ],
                               ),
                             ),
