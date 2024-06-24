@@ -57,7 +57,6 @@ class _MyHomePageState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Appbar(),
                       Spacer(),
                       Image.asset('assets/images/logo.png',height: 150,),
                       SizedBox(

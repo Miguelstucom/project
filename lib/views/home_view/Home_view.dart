@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  Widget _buildAnimatedContainer(String imagePath, String title, String description) {
+  Widget _buildAnimatedContainer(String imagePath, String title, String description, String route) {
     return SlideTransition(
       position: _offsetAnimation,
       child: GestureDetector(
         onTap: () {
           Navigator.pushNamed(
             context,
-            '/Login',
+            route,
             arguments: "home",
           );
           _hideContainers();
@@ -112,6 +112,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black,
+                          fontWeight: FontWeight.normal,
                           decoration: TextDecoration.none,
                         ),
                       ),
@@ -240,7 +241,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                               height: 15,
                             ),
                             const Text(
-                              "Quieres escribir algo?",
+                              "En progreso",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 22,
@@ -249,11 +250,99 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             const SizedBox(
                               height: 15,
                             ),
+                            Container(
+                              height: 70,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.note_add_outlined),
+                                  SizedBox(width: 20,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Tarea a hacer"),
+                                      Text("22 de")
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.add,color: Colors.red,)
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 70,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.note_add_outlined),
+                                  SizedBox(width: 20,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Tarea a hacer"),
+                                      Text("22 de")
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.add,color: Colors.red,)
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 70,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.note_add_outlined),
+                                  SizedBox(width: 20,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Tarea a hacer"),
+                                      Text("22 de")
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.add,color: Colors.green,)
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -268,11 +357,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia"),
+                          _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia",'/Tasks'),
                           SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia"),
+                          _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia",'/Feelings'),
                           SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia"),
+                          _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia",'/Abc'),
                         ],
                       ),
                     ),

@@ -5,6 +5,13 @@ class AbcWriter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              AppBar(),
+            ],
+          ),
+        ));
   }
 }

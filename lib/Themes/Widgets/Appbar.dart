@@ -6,12 +6,34 @@ class Appbar extends StatelessWidget {
   final String? titulo;
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: Text(titulo ?? ""),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back,size: 25,),
-        onPressed: () => Navigator.pop(context),
+    return Container(
+      height: 60,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          color: Colors.white
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 20,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back,size: 30,),
+          ),
+          SizedBox(width: 10,),
+          if(titulo != null)
+          Text(titulo!,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+          Spacer(),
+          Icon(Icons.account_circle,size: 35,),
+          SizedBox(
+            width: 20,
+          ),
+        ],
       ),
     );
   }
