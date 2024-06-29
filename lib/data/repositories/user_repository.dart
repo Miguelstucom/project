@@ -10,26 +10,30 @@ class UserRepository {
 
   UserRepository({required this.apiClient});
 
-  Future<User> login(String username, String password) async {
+  Future<String> login(String username, String password) async {
     final response = await apiClient.post(
-      'login',
+      'auth/login',
       body: {'username': username, 'password': password},
     );
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final token = data['token'];
-      final user = User.fromJson(data['user']);
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_token', token);
-      await prefs.setString('user', json.encode(user.toJson()));
-
-      return user;
+      if (response.body.isNotEmpty) {
+        final data = json.decode(response.body);
+        final token = data['token'];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', token);
+        return token;
+      } else {
+        throw Exception('Response body is empty');
+      }
     } else {
+      print('Error: ${response.body}');
       throw Exception('Failed to log in');
     }
   }
+
+
+
 
   Future<User?> getUser() async {
     final prefs = await SharedPreferences.getInstance();

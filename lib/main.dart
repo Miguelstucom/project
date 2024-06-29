@@ -61,6 +61,7 @@ class MainState extends State {
       builder: DevicePreview.appBuilder,
       useInheritedMediaQuery: true,
       theme: ThemeData(
+        useMaterial3: true,
        fontFamily: 'Satoshi',
         primaryColor: Colors.white
       ),

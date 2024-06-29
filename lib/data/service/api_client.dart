@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient {
-  String baseUrl="http://localhost:8080/";
+  String baseUrl="http://192.168.0.101:8080/";
   final http.Client httpClient;
 
   ApiClient({required this.httpClient});
@@ -16,15 +18,17 @@ class ApiClient {
     return response;
   }
 
-  Future<http.Response> post(String endpoint, {Map<String, String>? body}) async {
+  Future<http.Response> post(String endpoint, {Map<String, String>? headers, Map<String, dynamic>? body}) async {
     final token = await _getToken();
     final response = await httpClient.post(
       Uri.parse('$baseUrl$endpoint'),
       headers: _headers(token),
-      body: body,
+      body: jsonEncode(body),
     );
     return response;
   }
+
+
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

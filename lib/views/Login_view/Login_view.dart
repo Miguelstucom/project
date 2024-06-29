@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Themes/Widgets/Appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../data/repositories/user_repository.dart';
@@ -28,6 +29,7 @@ class _LoginState extends State<Login> {
     super.initState();
     nodeEmail.addListener(_updateState);
     nodePass.addListener(_updateState);
+    checkLoginStatus();
   }
 
   @override
@@ -45,21 +47,30 @@ class _LoginState extends State<Login> {
     setState(() {});
   }
 
+  Future<void> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token');
+
+    if (token != null && token.isNotEmpty) {
+      Navigator.pushReplacementNamed(context, '/Home');
+    }
+  }
+
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
       String password = _passwordController.text;
-
       try {
         final user = await userRepository.login(username, password);
         Navigator.pushNamed(context, '/Home', arguments: user);
         print("Login exitoso");
       } catch (e) {
+        final user = await userRepository.login(username, password);
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error de inicio de sesión'),
+              title: Text(user.toString()),
               content: const Text('Usuario o contraseña incorrectos'),
               actions: [
                 TextButton(

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+
 import '../../Themes/Widgets/Appbar.dart';
+import '../../data/repositories/user_repository.dart';
+import '../../data/service/api_client.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
-
-
   Widget build(BuildContext context) {
-    return const SafeArea(
+    final UserRepository userRepository = UserRepository(apiClient: ApiClient(httpClient: http.Client()));
+    return SafeArea(
         child: Scaffold(
       body: Padding(
           padding: const EdgeInsets.only(right: 15, left: 15),
@@ -36,7 +38,9 @@ class ProfileView extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text("mavg1997@hotmail.com",
                           style: TextStyle(fontSize: 18)),
                     ],
@@ -48,9 +52,15 @@ class ProfileView extends StatelessWidget {
                 children: [
                   Text("Version 0.0.1"),
                   Spacer(),
-                  Text(
-                    "Cerrar Sesión",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  GestureDetector(
+                    onTap: () {
+                      userRepository.logout();
+                      Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+                    },
+                    child: Text(
+                      "Cerrar Sesión",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),

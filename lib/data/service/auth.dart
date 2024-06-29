@@ -10,7 +10,7 @@ class AuthRepo {
 
   Future<void> login(String username, String password) async {
     final response = await apiClient.post(
-      '/login',
+      'auth/login',
       body: {'username': username, 'password': password},
     );
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../Themes/Widgets/Appbar.dart';
 import '../../Themes/Widgets/TaskContainer.dart';
+import '../History_view/History_view.dart';
+import 'Main_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +17,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   bool _showContainers = false;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+
+  // Índice para controlar la página actual del BottomNavigationBar
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -128,6 +133,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return MainView();
+      case 1:
+      // Contenido de la segunda página (historial, por ejemplo)
+        return HistoryView();
+      case 2:
+      // Contenido de la tercera página (lista de tareas)
+        return HistoryView();
+      case 3:
+      // Contenido de la cuarta página (configuración, por ejemplo)
+        return Scaffold(
+          body: Center(
+            child: Text("Contenido de la página de configuración"),
+          ),
+        );
+      default:
+        return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -152,21 +179,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.home),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.history_rounded),
-                        onPressed: () {},
+                        icon: Icon(Icons.home,),
+                        onPressed: () {
+                          _selectPage(0);
+                        },
                       ),
                       SizedBox(width: 48),
                       IconButton(
                         icon: Icon(Icons.list),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.settings),
-                        onPressed: () {},
+                        onPressed: () {
+                          _selectPage(2);
+                        },
                       ),
                     ],
                   ),
@@ -180,93 +203,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 child: Icon(Icons.add),
               ),
               backgroundColor: Colors.transparent,
-              body: Column(
-                children: [
-                  const HomeAppbar(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 15, left: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              "Consejos diarios",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 150,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 3,
-                                itemBuilder: (context, i) {
-                                  return Container(
-                                    width: MediaQuery.of(context).size.width * 0.7,
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: Card(
-                                      surfaceTintColor: Colors.white,
-                                      color: Colors.white,
-                                      elevation: 5.0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(8),
-                                              child: Image.asset(
-                                                'assets/images/test1.png',
-                                                fit: BoxFit.cover,
-                                                height: double.infinity,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Text(
-                              "En progreso",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            TaskContainer(name: "Limpar los platos",date: "Jun 22",done: true,),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            TaskContainer(name: "Ir al gimnasio",date: "Jul 22",done: false,),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            TaskContainer(name: "Estudiar para el examen",date: "Jul 20",done: false,),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              body: _buildPage(_currentIndex),
             ),
             if (_showContainers)
               GestureDetector(
@@ -279,11 +216,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia",'/Tasks'),
+                          _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia", '/Tasks'),
                           SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia",'/Feelings'),
+                          _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia", '/Feelings'),
                           SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia",'/Abc'),
+                          _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia", '/Abc'),
                         ],
                       ),
                     ),
@@ -294,5 +231,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
       ),
     );
+  }
+
+  void _selectPage(int newIndex) {
+    setState(() {
+      if (_currentIndex != newIndex) {
+        _currentIndex = newIndex;
+      }
+    });
   }
 }

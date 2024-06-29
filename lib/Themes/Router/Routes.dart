@@ -9,4 +9,5 @@ class Routes {
   static const Tasks = '/Tasks';
   static const Feelings = '/Feelings';
   static const Abc = '/Abc';
+  static const History = 'History';
 }

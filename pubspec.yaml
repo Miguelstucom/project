@@ -36,6 +36,7 @@ dev_dependencies:
   page_transition: ^2.1.0
   flutter_lints: ^3.0.0
   package_info_plus: ^8.0.0
+  percent_indicator: ^4.2.3
 
 flutter:
   assets:
