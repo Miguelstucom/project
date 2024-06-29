@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../Themes/Widgets/Appbar.dart';
+import 'package:http/http.dart' as http;
+
+import '../../data/repositories/user_repository.dart';
+import '../../data/service/api_client.dart';
 
 class Login extends StatefulWidget {
   final String title = "Login Page";
@@ -9,15 +12,16 @@ class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoginState createState() => _LoginState();
 }
 
-class _MyHomePageState extends State<Login> {
+class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  FocusNode nodeEmail = FocusNode();
-  FocusNode nodePass = FocusNode();
+  final FocusNode nodeEmail = FocusNode();
+  final FocusNode nodePass = FocusNode();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final UserRepository userRepository = UserRepository(apiClient: ApiClient(httpClient: http.Client()));
 
   @override
   void initState() {
@@ -41,12 +45,43 @@ class _MyHomePageState extends State<Login> {
     setState(() {});
   }
 
+  Future<void> _login() async {
+    if (_formKey.currentState!.validate()) {
+      String username = _usernameController.text;
+      String password = _passwordController.text;
+
+      try {
+        final user = await userRepository.login(username, password);
+        Navigator.pushNamed(context, '/Home', arguments: user);
+        print("Login exitoso");
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error de inicio de sesión'),
+              content: const Text('Usuario o contraseña incorrectos'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Aceptar'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Stack(
         children: [
-          Image.asset('assets/images/background.png',fit: BoxFit.fill,height: double.infinity,),
+          Image.asset('assets/images/background.png', fit: BoxFit.fill, height: double.infinity),
           Scaffold(
             backgroundColor: Colors.transparent,
             body: Form(
@@ -58,138 +93,17 @@ class _MyHomePageState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Spacer(),
-                      Image.asset('assets/images/logo.png',height: 150,),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          controller: _usernameController,
-                          focusNode: nodeEmail,
-                          decoration: const InputDecoration(
-                              labelText: 'Email',
-                              filled: true,
-                              hintText: 'ejemplo@ejemplo.es',
-                              fillColor: Colors.white,
-                              labelStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                              border: InputBorder.none,
-                              prefixIcon: Icon(Icons.mail)),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ),
+                      Image.asset('assets/images/logo.png', height: 150),
+                      SizedBox(height: 20),
+                      const SizedBox(height: 30),
+                      _buildEmailField(),
                       const SizedBox(height: 20.0),
-                      Container(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          focusNode: nodePass,
-                          decoration: const InputDecoration(
-                              labelText: 'Contraseña',
-                              filled: true,
-                              hintText: 'Contraseña',
-                              fillColor: Colors.white,
-                              labelStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                              border: InputBorder.none,
-                              prefixIcon: Icon(Icons.lock)),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
+                      _buildPasswordField(),
                       const SizedBox(height: 35.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            String username = _usernameController.text;
-                            String password = _passwordController.text;
-                            if (username == "User") {
-                              RegExp passwordRegExp =
-                                  RegExp(r'^(?=.*[a-zA-Z])(?=.*\d).{7,}$');
-                              if (passwordRegExp.hasMatch(password)) {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/Home',
-                                  arguments: username,
-                                );
-                                print("Login exitoso------------------");
-                              } else {
-                                print(
-                                    "La contraseña debe tener al menos 7 caracteres y contener letras y numeros.");
-                              }
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text('Error de inicio de sesión'),
-                                    content: const Text(
-                                      'Usuario o contraseña incorrectos',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Aceptar'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          minimumSize: const Size(double.infinity, 60),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.white),
-                        ),
-                      ),
+                      _buildLoginButton(),
                       const SizedBox(height: 20.0),
-                      Text(
-                        "He olvidado la contraseña",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      _buildForgotPasswordText(),
+                      const SizedBox(height: 20),
                       const Spacer(),
                     ],
                   ),
@@ -198,6 +112,94 @@ class _MyHomePageState extends State<Login> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextFormField(
+        controller: _usernameController,
+        focusNode: nodeEmail,
+        decoration: const InputDecoration(
+          labelText: 'Email',
+          filled: true,
+          hintText: 'ejemplo@ejemplo.es',
+          fillColor: Colors.white,
+          labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.mail),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter an email';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextFormField(
+        controller: _passwordController,
+        obscureText: true,
+        focusNode: nodePass,
+        decoration: const InputDecoration(
+          labelText: 'Contraseña',
+          filled: true,
+          hintText: 'Contraseña',
+          fillColor: Colors.white,
+          labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.lock),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter a password';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return ElevatedButton(
+      onPressed: _login,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.orange,
+        minimumSize: const Size(double.infinity, 60),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+      child: Text(
+        'Login',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildForgotPasswordText() {
+    return Text(
+      "He olvidado la contraseña",
+      style: TextStyle(
+        color: Colors.blue,
+        fontSize: 18,
       ),
     );
   }
