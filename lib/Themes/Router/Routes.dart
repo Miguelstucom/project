@@ -10,4 +10,5 @@ class Routes {
   static const Feelings = '/Feelings';
   static const Abc = '/Abc';
   static const History = 'History';
+  static const TaskList = '/TaskList';
 }

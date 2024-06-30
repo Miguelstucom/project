@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       case 1:
         return user != null ? HistoryView(user: user) : CircularProgressIndicator();
       case 2:
-        return HistoryView();
+        return user != null ? HistoryView(user: user) : CircularProgressIndicator();
       case 3:
         return Scaffold(
           body: Center(

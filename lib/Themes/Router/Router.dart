@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project/views/ABC_view/ABC_view.dart';
 import 'package:project/views/Feelings_view/Feelings_view.dart';
 import 'package:project/views/Splash_view/Splash_view.dart';
+import 'package:project/views/Tasks_view/Task_List.dart';
 import 'package:project/views/Tasks_view/Tasks_view.dart';
 
 import '../../views/History_view/History_view.dart';
@@ -26,6 +27,7 @@ Map<String,Widget Function(BuildContext)> get appRoutes{
     Routes.Feelings: (context) => const  FeelingsWriter(),
     Routes.Abc: (context) => const AbcWriter(),
     Routes.History: (context) => const HistoryView(),
+    Routes.TaskList: (context) => const TaskList(),
   };
 
 }
