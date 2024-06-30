@@ -1,7 +1,6 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../model/task.dart';
 import '../model/user.dart';
 import '../service/api_client.dart';
 
@@ -10,7 +9,7 @@ class UserRepository {
 
   UserRepository({required this.apiClient});
 
-  Future<String> login(String username, String password) async {
+  Future<User> login(String username, String password) async {
     final response = await apiClient.post(
       'auth/login',
       body: {'username': username, 'password': password},
@@ -20,18 +19,37 @@ class UserRepository {
       if (response.body.isNotEmpty) {
         final data = json.decode(response.body);
         final token = data['token'];
+        final userMap = data['user'];
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('auth_token', token);
-        return token;
+
+        final user = User.fromJson(userMap);
+
+        final tasksResponse = await apiClient.get('api/tasks/${user.id}');
+
+        if (tasksResponse.statusCode == 200) {
+          final tasksData = json.decode(tasksResponse.body);
+          if (tasksData['tasks'] != null) {
+            user.tasks = (tasksData['tasks'] as List)
+                .map((task) => Task.fromJson(task))
+                .toList();
+          } else {
+            print('No tasks found');
+          }
+        } else {
+          print('Error loading tasks: ${tasksResponse.body}');
+          throw Exception('Failed to load tasks');
+        }
+
+        await prefs.setString('user', json.encode(user.toJson()));
+        return user;
       } else {
         throw Exception('Response body is empty');
       }
     } else {
-      print('Error: ${response.body}');
       throw Exception('Failed to log in');
     }
   }
-
 
 
 

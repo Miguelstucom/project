@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Themes/Widgets/Appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../../data/model/user.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../data/service/api_client.dart';
 
@@ -50,7 +53,6 @@ class _LoginState extends State<Login> {
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
-
     if (token != null && token.isNotEmpty) {
       Navigator.pushReplacementNamed(context, '/Home');
     }
@@ -62,10 +64,11 @@ class _LoginState extends State<Login> {
       String password = _passwordController.text;
       try {
         final user = await userRepository.login(username, password);
-        Navigator.pushNamed(context, '/Home', arguments: user);
+        Navigator.pushReplacementNamed(context, '/Home', arguments: user);
         print("Login exitoso");
       } catch (e) {
         final user = await userRepository.login(username, password);
+        print('Error: $e');
         showDialog(
           context: context,
           builder: (BuildContext context) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../data/model/user.dart';
+
 class Appbar extends StatelessWidget {
   const Appbar({super.key, this.titulo});
 
@@ -58,8 +60,8 @@ class Appbar extends StatelessWidget {
 }
 
 class HomeAppbar extends StatelessWidget {
-  const HomeAppbar({super.key, this.titulo});
-
+  const HomeAppbar({super.key, this.titulo,this.user});
+  final User? user;
   final String? titulo;
 
   @override
@@ -83,6 +85,7 @@ class HomeAppbar extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 '/Profile',
+                arguments: user
               );
             },
             icon: Icon(

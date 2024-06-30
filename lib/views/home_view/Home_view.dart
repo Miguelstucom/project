@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../../Themes/Widgets/Appbar.dart';
-import '../../Themes/Widgets/TaskContainer.dart';
+import '../../data/model/user.dart';
 import '../History_view/History_view.dart';
 import 'Main_view.dart';
 
@@ -18,8 +19,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
 
-  // Índice para controlar la página actual del BottomNavigationBar
   int _currentIndex = 0;
+  User? _user;
 
   @override
   void initState() {
@@ -35,7 +36,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       parent: _controller,
       curve: Curves.easeInOutBack,
     ));
+    _fetchUser();
   }
+
+  Future<void> _fetchUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString('user');
+    if (userData != null) {
+      setState(() {
+        _user = User.fromJson(json.decode(userData));
+      });
+    }
+  }
+
 
   void _toggleContainers() {
     setState(() {
@@ -133,18 +146,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget _buildPage(int index) {
+  Widget _buildPage(int index, User? user) {
     switch (index) {
       case 0:
-        return MainView();
+        return user != null ? MainView(user: user) : CircularProgressIndicator();
       case 1:
-      // Contenido de la segunda página (historial, por ejemplo)
-        return HistoryView();
+        return user != null ? HistoryView(user: user) : CircularProgressIndicator();
       case 2:
-      // Contenido de la tercera página (lista de tareas)
         return HistoryView();
       case 3:
-      // Contenido de la cuarta página (configuración, por ejemplo)
         return Scaffold(
           body: Center(
             child: Text("Contenido de la página de configuración"),
@@ -203,7 +213,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 child: Icon(Icons.add),
               ),
               backgroundColor: Colors.transparent,
-              body: _buildPage(_currentIndex),
+              body: Column(
+                children: [
+                  HomeAppbar(user: _user),
+                  Expanded(
+                    child: _buildPage(_currentIndex, _user),
+                  ),
+                ],
+              ),
             ),
             if (_showContainers)
               GestureDetector(

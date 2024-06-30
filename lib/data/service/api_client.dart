@@ -13,10 +13,14 @@ class ApiClient {
     final token = await _getToken();
     final response = await httpClient.get(
       Uri.parse('$baseUrl$endpoint'),
-      headers: _headers(token),
+      headers: {
+        'Authorization': 'Bearer $token',
+        //'Content-Type': 'application/json',
+      },
     );
     return response;
   }
+
 
   Future<http.Response> post(String endpoint, {Map<String, String>? headers, Map<String, dynamic>? body}) async {
     final token = await _getToken();

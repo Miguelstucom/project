@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../Themes/Widgets/Appbar.dart';
+import '../../data/model/user.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../data/service/api_client.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
+  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final User? user = ModalRoute.of(context)?.settings.arguments as User?;
     final UserRepository userRepository = UserRepository(apiClient: ApiClient(httpClient: http.Client()));
     return SafeArea(
         child: Scaffold(
@@ -34,14 +36,14 @@ class ProfileView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Miguel Ángel Vázquez González",
+                        "${user?.firstname} ${user?.lastname}" ?? "texto diferente",
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 5,
                       ),
-                      Text("mavg1997@hotmail.com",
+                      Text(user?.username ?? "No hay información",
                           style: TextStyle(fontSize: 18)),
                     ],
                   )

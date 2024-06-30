@@ -1,28 +1,35 @@
-class Task{
-  late int? id;
-  late String? description;
-  late DateTime? creationDate;
-  late DateTime? dueDate;
+class Task {
+  final String? name;
+  final String description;
+  final String dueDate;
+  final String creationDate;
+  final bool state;
 
-Task({this.id,this.description,this.creationDate,this.dueDate});
+  Task({
+    this.name,
+    required this.description,
+    required this.dueDate,
+    required this.creationDate,
+    required this.state,
+  });
 
-factory Task.fromJson(Map<String, dynamic> json){
-  return Task(
-    id: json['id'] as int?,
-    description: json['description'] as String?,
-    creationDate: DateTime.parse(json['creationDate']),
-    dueDate: DateTime.parse(json['dueDate']),
-  );
-}
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      name: json['name'],
+      description: json['description'],
+      dueDate: json['dueDate'],
+      creationDate: json['creationDate'],
+      state: json['state'],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
+      'name': name,
       'description': description,
-      'creationDate': creationDate,
       'dueDate': dueDate,
-      'id': id,
+      'creationDate': creationDate,
+      'state': state,
     };
   }
-
-
 }

@@ -21,7 +21,7 @@ Map<String,Widget Function(BuildContext)> get appRoutes{
     Routes.Splash: (context) => const SplashPage(),
     Routes.Login: (context) => const Login(),
     Routes.Register: (context) => const Register(),
-    Routes.Profile: (context) => const ProfileView(),
+    Routes.Profile: (context) => ProfileView(),
     Routes.Tasks: (context) => const TasksWriter(),
     Routes.Feelings: (context) => const  FeelingsWriter(),
     Routes.Abc: (context) => const AbcWriter(),
