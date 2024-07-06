@@ -129,19 +129,21 @@ class _TaskListState extends State<TaskList> {
     return DateFormat('yyyy-MM-dd').parse(date);
   }
 
-  List<Task> _filterTasks(User? user) {
-    List<Task> tasks = user?.tasks?.where((task) {
+  List<Task> _filterTasks(List<Task> tasks) {
+    List<Task> filteredTasks = tasks.where((task) {
       DateTime creationDate = _parseDate(task.creationDate);
       DateTime dueDate = _parseDate(task.dueDate);
-      return !creationDate.isAfter(selectedDate) && !dueDate.isBefore(selectedDate);
-    }).toList() ?? [];
+      return creationDate.isBefore(selectedDate) && dueDate.isAfter(selectedDate) ||
+          creationDate.isAtSameMomentAs(selectedDate) ||
+          dueDate.isAtSameMomentAs(selectedDate);
+    }).toList();
 
     if (selectedFilter == "Completas") {
-      return tasks.where((task) => task.state == true).toList();
+      return filteredTasks.where((task) => task.state == true).toList();
     } else if (selectedFilter == "No completas") {
-      return tasks.where((task) => task.state == false).toList();
+      return filteredTasks.where((task) => task.state == false).toList();
     }
-    return tasks;
+    return filteredTasks;
   }
 
   @override
@@ -257,7 +259,23 @@ class _TaskListState extends State<TaskList> {
               ),
             ),
             SizedBox(height: 15),
-
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15, left: 15),
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < _filterTasks(user?.tasks ?? []).length; i++) ...[
+                        TaskContainer(
+                          task: user!.tasks![i],
+                        ),
+                        const SizedBox(height: 15),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
