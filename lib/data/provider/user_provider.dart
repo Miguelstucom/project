@@ -40,6 +40,7 @@ class UserProvider with ChangeNotifier {
       user.tasks = user.tasks ?? [];
       user.tasks?.add(task);
       await prefs.setString('user', json.encode(user.toJson()));
+      notifyListeners();
       print('Task added and user updated');
     } else {
       print('No user found in SharedPreferences');

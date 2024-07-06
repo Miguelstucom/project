@@ -1,4 +1,5 @@
 class Task {
+  late int? id;
   final String? name;
   final String description;
   final String dueDate;
@@ -7,6 +8,7 @@ class Task {
   late List<Task>? tasks;
 
   Task({
+    this.id,
     this.name,
     required this.description,
     required this.dueDate,
@@ -17,6 +19,7 @@ class Task {
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
+      id: json['id'] as int?,
       name: json['name'],
       description: json['description'],
       dueDate: json['dueDate'],
@@ -30,6 +33,7 @@ class Task {
 
   Map<String, dynamic> toJson() {
     return {
+      'id':id,
       'name': name,
       'description': description,
       'dueDate': dueDate,

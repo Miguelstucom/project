@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../../Themes/Widgets/Appbar.dart';
 import '../../data/model/user.dart';
 import '../History_view/History_view.dart';
 import 'Main_view.dart';
+import '../../data/provider/user_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +22,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late Animation<Offset> _offsetAnimation;
 
   int _currentIndex = 0;
-  User? _user;
 
   @override
   void initState() {
@@ -36,19 +37,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       parent: _controller,
       curve: Curves.easeInOutBack,
     ));
-    _fetchUser();
-  }
 
-  Future<void> _fetchUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userData = prefs.getString('user');
-    if (userData != null) {
-      setState(() {
-        _user = User.fromJson(json.decode(userData));
-      });
-    }
   }
-
 
   void _toggleContainers() {
     setState(() {
@@ -153,7 +143,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       case 1:
         return user != null ? HistoryView(user: user) : CircularProgressIndicator();
       case 2:
-        return user != null ? HistoryView(user: user) : CircularProgressIndicator();
+        return user != null ? HistoryView() : CircularProgressIndicator();
       case 3:
         return Scaffold(
           body: Center(
@@ -167,86 +157,92 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GestureDetector(
-        onTap: _hideContainers,
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/images/background.png',
-              fit: BoxFit.fill,
-              height: double.infinity,
-            ),
-            Scaffold(
-              bottomNavigationBar: BottomAppBar(
-                height: 70,
-                shape: const CircularNotchedRectangle(),
-                surfaceTintColor: Colors.white,
-                notchMargin: 15.0,
-                child: Container(
-                  height: 60.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.home,),
-                        onPressed: () {
-                          _selectPage(0);
-                        },
-                      ),
-                      SizedBox(width: 48),
-                      IconButton(
-                        icon: Icon(Icons.list),
-                        onPressed: () {
-                          _selectPage(2);
-                        },
-                      ),
-                    ],
-                  ),
+    return Consumer<UserProvider>(
+      builder: (context, userProvider, child) {
+        final User? user = userProvider.user;
+
+        return SafeArea(
+          child: GestureDetector(
+            onTap: _hideContainers,
+            child: Stack(
+              children: [
+                Image.asset(
+                  'assets/images/background.png',
+                  fit: BoxFit.fill,
+                  height: double.infinity,
                 ),
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                shape: CircleBorder(),
-                backgroundColor: Colors.white,
-                onPressed: _toggleContainers,
-                child: Icon(Icons.add),
-              ),
-              backgroundColor: Colors.transparent,
-              body: Column(
-                children: [
-                  HomeAppbar(user: _user),
-                  Expanded(
-                    child: _buildPage(_currentIndex, _user),
-                  ),
-                ],
-              ),
-            ),
-            if (_showContainers)
-              GestureDetector(
-                onTap: _hideContainers,
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                Scaffold(
+                  bottomNavigationBar: BottomAppBar(
+                    height: 70,
+                    shape: const CircularNotchedRectangle(),
+                    surfaceTintColor: Colors.white,
+                    notchMargin: 15.0,
+                    child: Container(
+                      height: 60.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia", '/Tasks'),
-                          SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia", '/Feelings'),
-                          SizedBox(height: 15),
-                          _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia", '/Abc'),
+                          IconButton(
+                            icon: Icon(Icons.home,),
+                            onPressed: () {
+                              _selectPage(0);
+                            },
+                          ),
+                          SizedBox(width: 48),
+                          IconButton(
+                            icon: Icon(Icons.list),
+                            onPressed: () {
+                              _selectPage(2);
+                            },
+                          ),
                         ],
                       ),
                     ),
                   ),
+                  floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                  floatingActionButton: FloatingActionButton(
+                    shape: CircleBorder(),
+                    backgroundColor: Colors.white,
+                    onPressed: _toggleContainers,
+                    child: Icon(Icons.add),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  body: Column(
+                    children: [
+                      HomeAppbar(user: user),
+                      Expanded(
+                        child: _buildPage(_currentIndex, user),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-          ],
-        ),
-      ),
+                if (_showContainers)
+                  GestureDetector(
+                    onTap: _hideContainers,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildAnimatedContainer('assets/images/test1.png', "Tareas", "Organiza todo aquello que tengas que hacer durante el dia", '/Tasks'),
+                              SizedBox(height: 15),
+                              _buildAnimatedContainer('assets/images/test1.png', "Pensamiento", "Organiza todo aquello que tengas que hacer durante el dia", '/Feelings'),
+                              SizedBox(height: 15),
+                              _buildAnimatedContainer('assets/images/test1.png', "Registro ABC", "Organiza todo aquello que tengas que hacer durante el dia", '/Abc'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
