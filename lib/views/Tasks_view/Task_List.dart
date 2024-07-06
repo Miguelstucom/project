@@ -257,25 +257,7 @@ class _TaskListState extends State<TaskList> {
               ),
             ),
             SizedBox(height: 15),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15, left: 15),
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < _filterTasks(user).length; i++) ...[
-                        TaskContainer(
-                          name: _filterTasks(user)[i].name,
-                          date: _filterTasks(user)[i].dueDate,
-                          done: _filterTasks(user)[i].state,
-                        ),
-                        const SizedBox(height: 15),
-                      ]
-                    ],
-                  ),
-                ),
-              ),
-            )
+
           ],
         ),
       ),

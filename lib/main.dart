@@ -2,16 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'Settings/app_settings.dart';
+import 'package:provider/provider.dart';
 import 'Themes/Router/Router.dart';
 import 'Themes/Router/Routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:device_preview/device_preview.dart';
 
+import 'data/provider/user_provider.dart';
+
 void main() {
-  Intl.defaultLocale = defaultDeviceLanguage;
-  //initializeDateFormatting('es-ES', null);
-  runApp(DevicePreview(builder: (context) => const Project()));
+  Intl.defaultLocale = 'es-ES';
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()..loadUser()),
+      ],
+      child: Project(),
+    ),
+  );
 }
 
 class Project extends StatefulWidget {
@@ -47,7 +56,7 @@ class MainState extends State {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: const [
@@ -61,10 +70,9 @@ class MainState extends State {
       builder: DevicePreview.appBuilder,
       useInheritedMediaQuery: true,
       theme: ThemeData(
-        useMaterial3: true,
-       fontFamily: 'Satoshi',
-        primaryColor: Colors.white
-      ),
+          useMaterial3: true,
+          fontFamily: 'Satoshi',
+          primaryColor: Colors.white),
       routes: appRoutes,
       initialRoute: Routes.Splash,
     );

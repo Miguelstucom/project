@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../Themes/Widgets/Appbar.dart';
 import '../../data/model/user.dart';
+import '../../data/provider/user_provider.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../data/service/api_client.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileView extends StatelessWidget {
@@ -55,8 +57,10 @@ class ProfileView extends StatelessWidget {
                   Text("Version 0.0.1"),
                   Spacer(),
                   GestureDetector(
-                    onTap: () {
-                      userRepository.logout();
+                    onTap: () async {
+                      final userProvider = Provider.of<UserProvider>(context, listen: false);
+                      await userProvider.logout();
+                      print("Se ha borrado el usuario");
                       Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
                     },
                     child: Text(
@@ -64,6 +68,7 @@ class ProfileView extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
+
                 ],
               ),
               SizedBox(

@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget _buildPage(int index, User? user) {
     switch (index) {
       case 0:
-        return user != null ? MainView(user: user) : CircularProgressIndicator();
+        return user != null ? MainView() : CircularProgressIndicator();
       case 1:
         return user != null ? HistoryView(user: user) : CircularProgressIndicator();
       case 2:

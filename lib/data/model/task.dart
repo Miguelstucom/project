@@ -4,6 +4,7 @@ class Task {
   final String dueDate;
   final String creationDate;
   final bool state;
+  late List<Task>? tasks;
 
   Task({
     this.name,
@@ -11,6 +12,7 @@ class Task {
     required this.dueDate,
     required this.creationDate,
     required this.state,
+    this.tasks,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,9 @@ class Task {
       dueDate: json['dueDate'],
       creationDate: json['creationDate'],
       state: json['state'],
+      tasks: json['tasks'] != null
+          ? List<Task>.from(json['tasks'].map((taskJson) => Task.fromJson(taskJson)))
+          :[],
     );
   }
 
@@ -30,6 +35,9 @@ class Task {
       'dueDate': dueDate,
       'creationDate': creationDate,
       'state': state,
+      'tasks': tasks?.map((task) => task.toJson()).toList(),
     };
   }
+
+
 }

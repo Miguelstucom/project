@@ -63,11 +63,11 @@ class _LoginState extends State<Login> {
       String username = _usernameController.text;
       String password = _passwordController.text;
       try {
-        final user = await userRepository.login(username, password);
+        final user = await userRepository.login(context,username, password);
         Navigator.pushReplacementNamed(context, '/Home', arguments: user);
         print("Login exitoso");
       } catch (e) {
-        final user = await userRepository.login(username, password);
+        final user = await userRepository.login(context,username, password);
         print('Error: $e');
         showDialog(
           context: context,

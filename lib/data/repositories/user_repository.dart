@@ -1,15 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/task.dart';
 import '../model/user.dart';
+import '../provider/user_provider.dart';
 import '../service/api_client.dart';
+import 'package:provider/provider.dart';
 
 class UserRepository {
   final ApiClient apiClient;
 
   UserRepository({required this.apiClient});
 
-  Future<User> login(String username, String password) async {
+  Future<User> login(BuildContext context, String username, String password) async {
     final response = await apiClient.post(
       'auth/login',
       body: {'username': username, 'password': password},
@@ -40,8 +43,11 @@ class UserRepository {
           print('Error loading tasks: ${tasksResponse.body}');
           throw Exception('Failed to load tasks');
         }
-
         await prefs.setString('user', json.encode(user.toJson()));
+
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUser(user);
+
         return user;
       } else {
         throw Exception('Response body is empty');
