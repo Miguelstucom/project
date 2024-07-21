@@ -132,8 +132,8 @@ class _TaskListState extends State<TaskList> {
 
   List<Task> _filterTasks(List<Task> tasks) {
     List<Task> filteredTasks = tasks.where((task) {
-      DateTime creationDate = _parseDate(task.creationDate);
-      DateTime dueDate = _parseDate(task.dueDate);
+      DateTime creationDate = _parseDate(task.creationDate!);
+      DateTime dueDate = _parseDate(task.dueDate!);
       return creationDate.isBefore(selectedDate) && dueDate.isAfter(selectedDate) ||
           creationDate.isAtSameMomentAs(selectedDate) ||
           dueDate.isAtSameMomentAs(selectedDate);

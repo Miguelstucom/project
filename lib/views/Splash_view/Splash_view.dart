@@ -35,9 +35,7 @@ class _SplashPageState extends State<SplashPage> {
             child: Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: NetworkImage(
-                  "https://ideausher.com/wp-content/uploads/2022/08/Flutter-App-Development-Cover.webp",
-                ),
+
               ),
             ),
           ),

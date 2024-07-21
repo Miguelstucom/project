@@ -13,10 +13,15 @@ class UserProvider with ChangeNotifier {
   Future<void> loadUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userJson = prefs.getString('user');
+
     if (userJson != null) {
       _user = User.fromJson(json.decode(userJson));
-      notifyListeners();
+    } else {
+      _user = User();
+      prefs.setString('user', json.encode(_user?.toJson()));
     }
+
+    notifyListeners();
   }
   void setUser(User? user) {
     _user = user;

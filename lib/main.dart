@@ -7,7 +7,6 @@ import 'Themes/Router/Router.dart';
 import 'Themes/Router/Routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:device_preview/device_preview.dart';
 
 import 'data/provider/user_provider.dart';
 
@@ -67,14 +66,14 @@ class MainState extends State {
       ],
       supportedLocales: _supportedLocales,
       locale: _locale,
-      builder: DevicePreview.appBuilder,
+
       useInheritedMediaQuery: true,
       theme: ThemeData(
           useMaterial3: true,
           fontFamily: 'Satoshi',
           primaryColor: Colors.white),
       routes: appRoutes,
-      initialRoute: Routes.Splash,
+      initialRoute: Routes.Home,
     );
   }
 }

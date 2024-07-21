@@ -17,6 +17,7 @@ TextEditingController nameController = TextEditingController();
 TextEditingController descriptionController = TextEditingController();
 TextEditingController startDateController = TextEditingController();
 TextEditingController finishDateController = TextEditingController();
+int? _selectedPriority;
 
 class _TasksWriterState extends State<TasksWriter> {
   DateTime? _startDate;
@@ -70,6 +71,7 @@ class _TasksWriterState extends State<TasksWriter> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Stack(
         children: [
@@ -118,15 +120,43 @@ class _TasksWriterState extends State<TasksWriter> {
                             onTap: () => _selectDate(context, false),
                           ),
                           SizedBox(height: 20),
+                          DropdownButtonFormField<int>(
+                            icon: Icon(Icons.priority_high),
+                            hint: Text('Prioridad',style: TextStyle(fontWeight: FontWeight.bold),),
+                            value: _selectedPriority,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            items: List.generate(5, (index) {
+                              int value = index + 1;
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text(value.toString()),
+                              );
+                            }),
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                _selectedPriority = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () async {
                               final task = Task(
                                 name: nameController.text,
                                 description: descriptionController.text,
                                 creationDate: startDateController.text,
+                                prio: _selectedPriority ?? 6,
                                 state: false,
                                 dueDate: finishDateController.text,
                               );
+                              print(task.toJson());
                               await context.read<UserProvider>().saveTask(task);
                               await context.read<UserProvider>().loadUser();
                               Navigator.pushNamed(
